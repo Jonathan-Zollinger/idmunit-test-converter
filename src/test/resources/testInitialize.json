@@ -1,0 +1,42 @@
+{
+  "id" : "testInitialize",
+  "title" : "Initialize",
+  "operations" : [ {
+    "comment" : "CLEANUP",
+    "operation" : "comment",
+    "data" : { }
+  }, {
+    "comment" : "Create test user in IDV",
+    "operation" : "AddObject",
+    "target" : "IDV",
+    "waitInterval" : 0,
+    "retryCount" : 0,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "cn=testuser1,ou=users,o=example" ],
+      "objectClass" : [ "User" ],
+      "cn" : [ "testuser1" ],
+      "givenName" : [ "Test" ],
+      "sn" : [ "User1" ],
+      "userPassword" : [ "Trivir1!" ],
+      "description" : [ "Test User1" ]
+    }
+  }, {
+    "comment" : "Validate test user in AD",
+    "operation" : "ValidateObject",
+    "target" : "AD",
+    "waitInterval" : 7000,
+    "retryCount" : 6,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "CN=testuser1,OU=Users,DC=EXAMPLE,DC=ORG" ],
+      "objectClass" : [ "User" ],
+      "givenName" : [ "Test" ],
+      "sn" : [ "User1" ],
+      "unicodePwd" : [ "Trivir1!" ],
+      "description" : [ "Test User1" ]
+    }
+  } ]
+}

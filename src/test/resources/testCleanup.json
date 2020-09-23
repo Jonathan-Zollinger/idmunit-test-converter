@@ -1,0 +1,31 @@
+{
+  "id" : "testCleanup",
+  "title" : "Cleanup",
+  "operations" : [ {
+    "comment" : "CLEANUP",
+    "operation" : "comment",
+    "data" : { }
+  }, {
+    "comment" : "Delete work user 1 from AD",
+    "operation" : "DelObject",
+    "target" : "AD",
+    "waitInterval" : 0,
+    "retryCount" : 0,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "CN=TestUser1,OU=Users,DC=EXAMPLE,DC=ORG" ]
+    }
+  }, {
+    "comment" : "Delete work user 1 in IDV",
+    "operation" : "DelObject",
+    "target" : "IDV",
+    "waitInterval" : 0,
+    "retryCount" : 0,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "cn=testuser1,ou=users,o=example" ]
+    }
+  } ]
+}

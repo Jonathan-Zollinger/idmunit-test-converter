@@ -1,0 +1,74 @@
+{
+  "id" : "test1_0AddUser",
+  "title" : "1.0 Add User",
+  "description" : "jtriv10a",
+  "operations" : [ {
+    "comment" : "PRETEST",
+    "operation" : "comment",
+    "data" : { }
+  }, {
+    "comment" : "TEST: USER ADD",
+    "operation" : "comment",
+    "data" : { }
+  }, {
+    "comment" : "Validate user in IDV",
+    "operation" : "ValidateObject",
+    "target" : "IDV",
+    "waitInterval" : 0,
+    "retryCount" : 0,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "cn=jtrivir,ou=users,o=example" ],
+      "objectClass" : [ "User" ],
+      "cn" : [ "jtrivir" ],
+      "givenName" : [ "Joe" ],
+      "sn" : [ "Trivir" ],
+      "userPassword" : [ "Trivir1!" ],
+      "description" : [ "Test User1" ]
+    }
+  }, {
+    "comment" : "Create user in AD",
+    "operation" : "AddObject",
+    "target" : "AD",
+    "waitInterval" : 7000,
+    "retryCount" : 6,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "cn=jtrivir,OU=Users,DC=EXAMPLE,DC=ORG" ],
+      "objectClass" : [ "User" ],
+      "cn" : [ "jtrivir" ],
+      "givenName" : [ "Joe" ],
+      "sn" : [ "Trivir" ],
+      "unicodePwd" : [ "Trivir1!" ],
+      "description" : [ "Test User1" ]
+    }
+  }, {
+    "comment" : "Cleanup",
+    "operation" : "comment",
+    "data" : { }
+  }, {
+    "comment" : "Delete user from AD",
+    "operation" : "DelObject",
+    "target" : "AD",
+    "waitInterval" : 0,
+    "retryCount" : 0,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "cn=JoeTrivir,OU=Users,DC=EXAMPLE,DC=ORG" ]
+    }
+  }, {
+    "comment" : "Delete user from IDV",
+    "operation" : "DelObject",
+    "target" : "IDV",
+    "waitInterval" : 0,
+    "retryCount" : 0,
+    "disabled" : false,
+    "expectFailure" : false,
+    "data" : {
+      "dn" : [ "cn=jtrivir,ou=users,o=example" ]
+    }
+  } ]
+}
