@@ -179,6 +179,8 @@ public class IdMUnitTestConverter {
             return String.valueOf(c.getBooleanCellValue());
         } else if (c.getCellType() == CellType.BLANK) {
             return "";
+        } else if (c.getCellType() == CellType.FORMULA) {
+            return c.getCellFormula();
         } else {
             throw new IllegalArgumentException(String.format("Unknown cell type for boolean %s", c.getCellType()));
         }
