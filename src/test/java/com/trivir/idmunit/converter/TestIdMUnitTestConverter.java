@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -43,7 +42,7 @@ public class TestIdMUnitTestConverter {
     }
 
     @Test
-    void test() throws IOException {
+    void testExample() throws IOException {
         Workbook workbook = idMUnitTestConverter.loadWorkbook(Paths.get("src/test/resources/ExampleTest.xls"));
         DefaultPrettyPrinter.Indenter unixIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.withLinefeed("\n");
         ObjectWriter writer = new ObjectMapper().writer(new DefaultPrettyPrinter().withObjectIndenter(unixIndenter));
@@ -55,7 +54,23 @@ public class TestIdMUnitTestConverter {
     }
 
     @Test
-    void test2() throws IOException {
+    void testSOU() throws IOException {
+        String fileName = "Sample SOU Test";
+        Path outputDirectory = Paths.get("src/test/resources/", fileName);
+        Workbook workbook = idMUnitTestConverter.loadWorkbook(Paths.get("src/test/resources/", String.format("%s.xls", fileName)));
+        DefaultPrettyPrinter.Indenter unixIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.withLinefeed("\n");
+        ObjectWriter writer = new ObjectMapper().writer(new DefaultPrettyPrinter().withObjectIndenter(unixIndenter));
+        deleteDirectory(outputDirectory);
+        Files.createDirectory(outputDirectory);
+        for (Iterator<Sheet> it = workbook.sheetIterator(); it.hasNext(); ) {
+            Sheet s = it.next();
+            ObjectNode node = idMUnitTestConverter.convertSheet(s);
+            writer.writeValue(Files.newOutputStream(outputDirectory.resolve(s.getSheetName() + ".json")), node);
+        }
+    }
+
+    @Test
+    void testDappsJBID() throws IOException {
         String fileName = "DappsJBIDProvisioning";
         Path outputDirectory = Paths.get("src/test/resources/", fileName);
         Workbook workbook = idMUnitTestConverter.loadWorkbook(Paths.get("src/test/resources/", String.format("%s.xls", fileName)));
