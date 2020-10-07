@@ -7,7 +7,10 @@
 
 package com.trivir.idmunit.converter;
 
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -16,6 +19,7 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -24,6 +28,8 @@ import java.util.Map;
 import static com.trivir.idmunit.converter.IdMUnitHeader.*;
 
 public class IdMUnitTestConverter {
+
+    // TODO: Add format version number.
 
     private static final String SECTION_DIVIDER_INDICATOR = "---";
 
@@ -40,7 +46,27 @@ public class IdMUnitTestConverter {
         objectMapper = new ObjectMapper();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        if (args.length != 2) {
+            System.out.println("You must pass the path to the .xls file as the first parameter and the output directory path as the second parameter.");
+        }
+        Path inputFile = Paths.get(args[0]);
+        Path outputDir = Paths.get(args[1]);
+        if (Files.exists(outputDir) && !Files.isDirectory(outputDir)) {
+            throw new IllegalArgumentException("Output path must be a directory.");
+        }
+        IdMUnitTestConverter testConverter = new IdMUnitTestConverter();
+        Workbook workbook = testConverter.loadWorkbook(inputFile);
+        String workbookName = inputFile.getFileName().toString();
+        Path workbookDir = outputDir.resolve(workbookName.substring(0, workbookName.lastIndexOf(".")));
+        Files.createDirectories(workbookDir);
+        DefaultPrettyPrinter.Indenter unixIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.withLinefeed("\n");
+        ObjectWriter writer = new ObjectMapper().writer(new DefaultPrettyPrinter().withObjectIndenter(unixIndenter));
+        for (Iterator<Sheet> it = workbook.sheetIterator(); it.hasNext(); ) {
+            Sheet s = it.next();
+            ObjectNode node = testConverter.convertSheet(s);
+            writer.writeValue(Files.newOutputStream(workbookDir.resolve(s.getSheetName() + ".json")), node);
+        }
     }
 
     ObjectNode convertSheet(Sheet sheetToConvert) {
@@ -50,7 +76,7 @@ public class IdMUnitTestConverter {
         if (!sheetToConvert.getRow(1).getCell(0).getStringCellValue().equals(SECTION_DIVIDER_INDICATOR)) {
             ret.put(DESCRIPTION_KEY, sheetToConvert.getRow(1).getCell(0).getStringCellValue());
         }
-        Map<IdMUnitHeader, Integer> idmUnitHeaderMap = new HashMap<>();
+        Map<IdMUnitHeader, Integer> idmUnitHeaderMap = new LinkedHashMap<>();
         Map<String, Map<Integer, String>> headerInformationMap = new LinkedHashMap<>();
         ArrayNode operationsArray = objectMapper.createArrayNode();
         boolean headersParsed = false;
@@ -95,7 +121,6 @@ public class IdMUnitTestConverter {
             }
         }
         ret.set(OPERATIONS_KEY, operationsArray);
-        // Iterate over the header rows and marshall the data so that we can use it when iterating over the operation rows.
 
         return ret;
     }
@@ -112,8 +137,6 @@ public class IdMUnitTestConverter {
             ret.put(RetryCount.getJsonKey(), getIdMUnitHeaderIntFromCell(idmUnitHeaderMap.get(RetryCount), rowToConvert));
             ret.put(DisableStep.getJsonKey(), getIdMUnitHeaderBooleanFromCell(idmUnitHeaderMap.get(DisableStep), rowToConvert));
             ret.put(ExpectFailure.getJsonKey(), getIdMUnitHeaderBooleanFromCell(idmUnitHeaderMap.get(ExpectFailure), rowToConvert));
-            // Iterate over the columns. If the index is 0-6, these are operation information. Otherwise it is data that we will use the header to convert.
-            // headerInformation.get(column.getColumnIndex)) gives us the key that we will use for the JSON.
 
             int maxIdMUnitHeaderIndex = idmUnitHeaderMap.values().stream().max(Integer::compareTo).orElseThrow(() -> new IllegalArgumentException("There are no IdMUnit headers."));
 
@@ -126,8 +149,7 @@ public class IdMUnitTestConverter {
                 }
             }
         }
-        // Split the value in the column and add the values to the array.
-        // Add the array to the object.
+
         ret.set(DATA_KEY, data);
         return ret;
     }
