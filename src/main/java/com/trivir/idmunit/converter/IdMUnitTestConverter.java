@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.trivir.idmunit.converter.IdMUnitHeader.*;
 
@@ -37,6 +34,7 @@ public class IdMUnitTestConverter {
     private static final String TITLE_KEY = "title";
     private static final String DESCRIPTION_KEY = "description";
     private static final String OPERATIONS_KEY = "operations";
+    private static final String HEADERS_KEY = "headers";
 
     private static final String DATA_KEY = "data";
 
@@ -120,6 +118,17 @@ public class IdMUnitTestConverter {
                 }
             }
         }
+        ObjectNode headers = objectMapper.createObjectNode();
+        for (Map.Entry<String, Map<Integer, String>> headerGroup : headerInformationMap.entrySet()) {
+            ObjectNode item = objectMapper.createObjectNode();
+            headerGroup.getValue().entrySet().stream()
+                .filter(i -> !i.getValue().isEmpty())
+                .forEach(i -> item.put(i.getKey().toString(), i.getValue()));
+            if (!item.isEmpty()) {
+                headers.set(headerGroup.getKey(), item);
+            }
+        }
+        ret.set(HEADERS_KEY, headers);
         ret.set(OPERATIONS_KEY, operationsArray);
 
         return ret;
@@ -129,7 +138,7 @@ public class IdMUnitTestConverter {
         ObjectNode ret = objectMapper.createObjectNode();
         ret.put(Comment.getJsonKey(), rowToConvert.getCell(idmUnitHeaderMap.get(Comment)).getStringCellValue());
         ret.put(Operation.getJsonKey(), rowToConvert.getCell(idmUnitHeaderMap.get(Operation)).getStringCellValue());
-        ObjectNode data = objectMapper.createObjectNode();
+        TreeMap<String, ArrayNode> data = new TreeMap<>(Comparator.comparing(String::toLowerCase));
 
         if (!ret.get(Operation.getJsonKey()).asText().equals("comment")) {
             ret.put(Target.getJsonKey(), getIdMUnitHeaderStringFromCell(idmUnitHeaderMap.get(Target), rowToConvert));
@@ -145,12 +154,12 @@ public class IdMUnitTestConverter {
                 Cell cell = rowToConvert.getCell(i);
                 if (cell != null && !getStringFromCell(cell).isEmpty()) {
                     a.add(getStringFromCell(cell));
-                    data.set(headerInformation.get(i), a);
+                    data.put(headerInformation.get(i), a);
                 }
             }
         }
 
-        ret.set(DATA_KEY, data);
+        ret.set(DATA_KEY, objectMapper.valueToTree(data));
         return ret;
     }
 
