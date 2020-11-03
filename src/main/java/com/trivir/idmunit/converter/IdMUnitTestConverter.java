@@ -118,14 +118,16 @@ public class IdMUnitTestConverter {
                 }
             }
         }
+        int maxIdMUnitHeaderIndex = idmUnitHeaderMap.values().stream().max(Integer::compareTo).orElseThrow(() -> new IllegalArgumentException("There are no IdMUnit headers."));
         ObjectNode headers = objectMapper.createObjectNode();
         for (Map.Entry<String, Map<Integer, String>> headerGroup : headerInformationMap.entrySet()) {
-            ObjectNode item = objectMapper.createObjectNode();
+            Map<String, Integer> item = new TreeMap<>(Comparator.comparing(String::toLowerCase));
             headerGroup.getValue().entrySet().stream()
                 .filter(i -> !i.getValue().isEmpty())
-                .forEach(i -> item.put(i.getKey().toString(), i.getValue()));
+                .filter(i -> i.getKey() > maxIdMUnitHeaderIndex)
+                .forEach(i -> item.put(i.getValue(), i.getKey()));
             if (!item.isEmpty()) {
-                headers.set(headerGroup.getKey(), item);
+                headers.set(headerGroup.getKey(), objectMapper.valueToTree(item));
             }
         }
         ret.set(HEADERS_KEY, headers);
