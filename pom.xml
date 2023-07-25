@@ -10,8 +10,8 @@
     </parent>
 
     <groupId>com.trivir.idmunit</groupId>
-    <artifactId>idmunit-cli</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>idmunit-test-converter</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
