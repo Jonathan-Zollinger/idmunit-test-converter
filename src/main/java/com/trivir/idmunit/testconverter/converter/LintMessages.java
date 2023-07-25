@@ -26,9 +26,9 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter;
+package com.trivir.idmunit.testconverter.converter;
 
-import com.trivir.idmunit.cli.converter.model.OperationConfigHeader;
+import com.trivir.idmunit.testconverter.converter.model.OperationConfigHeader;
 import lombok.Getter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

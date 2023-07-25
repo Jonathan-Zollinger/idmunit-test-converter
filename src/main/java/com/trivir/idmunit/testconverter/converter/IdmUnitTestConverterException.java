@@ -26,16 +26,22 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter.model;
+package com.trivir.idmunit.testconverter.converter;
 
-import lombok.Data;
+public class IdmUnitTestConverterException extends RuntimeException {
+    public IdmUnitTestConverterException() {
+        super();
+    }
 
-import java.util.List;
+    public IdmUnitTestConverterException(String message) {
+        super(message);
+    }
 
-@Data
-public class OperationData {
+    public IdmUnitTestConverterException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    private String attribute;
-    private List<String> value = null;
-    private List<String> meta = null;
+    public IdmUnitTestConverterException(Throwable cause) {
+        super(cause);
+    }
 }

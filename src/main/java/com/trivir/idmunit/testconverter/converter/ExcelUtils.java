@@ -26,7 +26,7 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter;
+package com.trivir.idmunit.testconverter.converter;
 
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

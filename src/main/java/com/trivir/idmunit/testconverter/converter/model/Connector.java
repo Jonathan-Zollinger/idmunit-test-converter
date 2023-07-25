@@ -26,16 +26,15 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter.model;
+package com.trivir.idmunit.testconverter.converter.model;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class ConnectorAttribute {
+public class Connector {
 
     private String name;
-    private int groupNum;
-    private List<String> meta = null;
+    private List<ConnectorAttribute> attributes;
 }

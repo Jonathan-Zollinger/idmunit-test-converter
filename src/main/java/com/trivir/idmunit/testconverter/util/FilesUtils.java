@@ -26,23 +26,26 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter.model;
+package com.trivir.idmunit.testconverter.util;
 
-import lombok.Data;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
-import java.util.ArrayList;
-import java.util.List;
+public class FilesUtils {
 
-@Data
-public class IdmUnitTest {
-
-    private String name;
-    private String title;
-    private String desc;
-    private List<Connector> connectors = new ArrayList<>();
-    private List<Operation> operations = new ArrayList<>();
-
-    // These should never be false, set to null if false to avoid serializing to JSON
-    private Boolean hasIsCriticalConfigHeader;
-    private Boolean hasRepeatOpRangeConfigHeader;
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void deleteDirectoryIfExists(Path directory) throws IOException {
+        if (Files.exists(directory)) {
+            try (Stream<Path> files = Files.walk(directory)) {
+                files
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+            }
+        }
+    }
 }

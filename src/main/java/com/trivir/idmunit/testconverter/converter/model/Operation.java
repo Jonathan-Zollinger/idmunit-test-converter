@@ -26,7 +26,7 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter.model;
+package com.trivir.idmunit.testconverter.converter.model;
 
 import lombok.Data;
 

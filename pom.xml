@@ -84,7 +84,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.trivir.idmunit.cli.cmd.Excel2Json</mainClass>
+                            <mainClass>com.trivir.idmunit.testconverter.cmd.Excel2Json</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
@@ -106,14 +106,14 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <assembleDirectory>${project.build.directory}/idmunit-cli</assembleDirectory>
+                    <assembleDirectory>${project.build.directory}/idmunit-test-converter</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>com.trivir.idmunit.cli.cmd.Excel2Json</mainClass>
+                            <mainClass>com.trivir.idmunit.testconverter.cmd.Excel2Json</mainClass>
                             <id>excel2json</id>
                         </program>
                         <program>
-                            <mainClass>com.trivir.idmunit.cli.cmd.Json2Excel</mainClass>
+                            <mainClass>com.trivir.idmunit.testconverter.cmd.Json2Excel</mainClass>
                             <id>json2excel</id>
                         </program>
                     </programs>

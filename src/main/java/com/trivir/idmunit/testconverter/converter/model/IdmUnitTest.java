@@ -26,15 +26,23 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter.model;
+package com.trivir.idmunit.testconverter.converter.model;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Connector {
+public class IdmUnitTest {
 
     private String name;
-    private List<ConnectorAttribute> attributes;
+    private String title;
+    private String desc;
+    private List<Connector> connectors = new ArrayList<>();
+    private List<Operation> operations = new ArrayList<>();
+
+    // These should never be false, set to null if false to avoid serializing to JSON
+    private Boolean hasIsCriticalConfigHeader;
+    private Boolean hasRepeatOpRangeConfigHeader;
 }

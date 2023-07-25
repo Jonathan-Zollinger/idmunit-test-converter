@@ -26,7 +26,7 @@
  *
  */
 
-package com.trivir.idmunit.cli.util;
+package com.trivir.idmunit.testconverter.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;

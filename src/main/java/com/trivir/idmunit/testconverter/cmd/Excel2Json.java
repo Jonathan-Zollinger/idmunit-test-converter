@@ -26,18 +26,18 @@
  *
  */
 
-package com.trivir.idmunit.cli.cmd;
+package com.trivir.idmunit.testconverter.cmd;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.trivir.idmunit.cli.converter.ExcelParser;
-import com.trivir.idmunit.cli.converter.ExcelUtils;
-import com.trivir.idmunit.cli.converter.IdmUnitTestConverterException;
-import com.trivir.idmunit.cli.converter.model.IdmUnitTest;
-import com.trivir.idmunit.cli.util.FilesUtils;
-import com.trivir.idmunit.cli.util.JsonUtils;
-import com.trivir.idmunit.cli.util.PicoCliValidation;
-import com.trivir.idmunit.cli.util.ProgressBar;
+import com.trivir.idmunit.testconverter.converter.ExcelParser;
+import com.trivir.idmunit.testconverter.converter.ExcelUtils;
+import com.trivir.idmunit.testconverter.converter.IdmUnitTestConverterException;
+import com.trivir.idmunit.testconverter.converter.model.IdmUnitTest;
+import com.trivir.idmunit.testconverter.util.FilesUtils;
+import com.trivir.idmunit.testconverter.util.JsonUtils;
+import com.trivir.idmunit.testconverter.util.PicoCliValidation;
+import com.trivir.idmunit.testconverter.util.ProgressBar;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.fusesource.jansi.Ansi;

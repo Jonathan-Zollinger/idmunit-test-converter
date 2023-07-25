@@ -26,22 +26,16 @@
  *
  */
 
-package com.trivir.idmunit.cli.converter;
+package com.trivir.idmunit.testconverter.converter.model;
 
-public class IdmUnitTestConverterException extends RuntimeException {
-    public IdmUnitTestConverterException() {
-        super();
-    }
+import lombok.Data;
 
-    public IdmUnitTestConverterException(String message) {
-        super(message);
-    }
+import java.util.List;
 
-    public IdmUnitTestConverterException(String message, Throwable cause) {
-        super(message, cause);
-    }
+@Data
+public class ConnectorAttribute {
 
-    public IdmUnitTestConverterException(Throwable cause) {
-        super(cause);
-    }
+    private String name;
+    private int groupNum;
+    private List<String> meta = null;
 }

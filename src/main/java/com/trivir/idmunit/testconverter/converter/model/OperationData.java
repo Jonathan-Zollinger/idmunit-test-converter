@@ -26,26 +26,16 @@
  *
  */
 
-package com.trivir.idmunit.cli.util;
+package com.trivir.idmunit.testconverter.converter.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.stream.Stream;
+import lombok.Data;
 
-public class FilesUtils {
+import java.util.List;
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void deleteDirectoryIfExists(Path directory) throws IOException {
-        if (Files.exists(directory)) {
-            try (Stream<Path> files = Files.walk(directory)) {
-                files
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-            }
-        }
-    }
+@Data
+public class OperationData {
+
+    private String attribute;
+    private List<String> value = null;
+    private List<String> meta = null;
 }

@@ -26,17 +26,17 @@
  *
  */
 
-package com.trivir.idmunit.cli.cmd;
+package com.trivir.idmunit.testconverter.cmd;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.trivir.idmunit.cli.converter.ExcelUtils;
-import com.trivir.idmunit.cli.converter.ExcelWriter;
-import com.trivir.idmunit.cli.converter.model.IdmUnitTest;
-import com.trivir.idmunit.cli.util.JsonUtils;
-import com.trivir.idmunit.cli.util.PicoCliValidation;
-import com.trivir.idmunit.cli.util.ProgressBar;
+import com.trivir.idmunit.testconverter.converter.ExcelUtils;
+import com.trivir.idmunit.testconverter.converter.ExcelWriter;
+import com.trivir.idmunit.testconverter.converter.model.IdmUnitTest;
+import com.trivir.idmunit.testconverter.util.JsonUtils;
+import com.trivir.idmunit.testconverter.util.PicoCliValidation;
+import com.trivir.idmunit.testconverter.util.ProgressBar;
 import org.apache.poi.ss.usermodel.*;
 import org.fusesource.jansi.AnsiConsole;
 import picocli.CommandLine;
