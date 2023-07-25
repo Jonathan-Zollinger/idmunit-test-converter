@@ -1,4 +1,5 @@
-*.iml
 .idea/
 target/
-src/test/resources/**/*.json
+*.iml
+checkstyle.xml
+.mvn/wrapper/*.jar
