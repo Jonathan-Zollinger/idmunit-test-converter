@@ -32,6 +32,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class IdmUnitTest {
@@ -39,6 +40,7 @@ public class IdmUnitTest {
     private String name;
     private String title;
     private String desc;
+    private Map<Integer, Float> columnWidths; //(Group Number, Width)
     private List<Connector> connectors = new ArrayList<>();
     private List<Operation> operations = new ArrayList<>();
 

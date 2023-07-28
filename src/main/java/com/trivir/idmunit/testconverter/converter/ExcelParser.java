@@ -37,7 +37,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class ExcelParser {
@@ -107,11 +109,33 @@ public class ExcelParser {
         idmUnitTest.setName(testName);
         idmUnitTest.setTitle(testDetails.getTitle());
         idmUnitTest.setDesc(testDetails.getDescription());
+        idmUnitTest.setColumnWidths(parseColumnWidths(rowGroups));
         idmUnitTest.setConnectors(connectors);
         idmUnitTest.setOperations(operations);
         idmUnitTest.setHasIsCriticalConfigHeader(sheetHasIsCriticalOpConfigHeader ? true : null);
         idmUnitTest.setHasRepeatOpRangeConfigHeader(sheetHasRepeatOpRangeOpConfigHeader ? true : null);
         return idmUnitTest;
+    }
+
+    // POI will only return a cell's width if it's populated. querying cell width on a single row returns only a few values.
+    private Map<Integer, Float> parseColumnWidths(RowGroups rowGroups) {
+        Function<List<Row>, Map<Integer, Float>> columnParser = rows -> {
+            Map<Integer, Float> thisTestColumnWidths = new HashMap<>();
+            for (Row row: rows) {
+                for (Cell cell: row) {
+                    thisTestColumnWidths.put(cell.getColumnIndex(), cell.getSheet().getColumnWidthInPixels(cell.getColumnIndex()));
+                }
+            }
+            return thisTestColumnWidths;
+        };
+
+        return new HashMap<>(Stream.of(rowGroups.getConnectorRows(),
+                        rowGroups.getOperationRows(),
+                        rowGroups.getTestDetailsRows(),
+                        rowGroups.getUnknownRows())
+                .map(columnParser)
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (original, duplicate) -> original)));
     }
 
     private void checkSectionDelimiterRow(Row row) {
