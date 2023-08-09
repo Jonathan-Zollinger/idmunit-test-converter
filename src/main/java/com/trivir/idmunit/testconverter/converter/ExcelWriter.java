@@ -92,6 +92,16 @@ public class ExcelWriter {
         });
         writeDelimiterRow();
 
+        for (int column = 0; column < getNumColumns(); column ++) {
+            double columnWidth;
+            if (null==idmUnitTest.getColumnWidths().get(column)){
+                columnWidth = column < numOperationConfigHeaders && column != 0 ? 35 : 15;
+            }else {
+                columnWidth = idmUnitTest.getColumnWidths().get(column);
+            }
+            sheet.setColumnWidth(column, (int) (columnWidth * EXCEL_WIDTH_CONSTANT));
+        }
+
         sheet.setColumnWidth(0, 35 * EXCEL_WIDTH_CONSTANT);
         for (int i = 1; i < numOperationConfigHeaders; i++) {
             sheet.setColumnWidth(i, 15 * EXCEL_WIDTH_CONSTANT);
